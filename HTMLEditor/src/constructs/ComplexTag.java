@@ -52,20 +52,7 @@ public class ComplexTag extends Construct{
 		return content.get(numChild);
 	}
 	
-	public static void complexToBuffer(String tag, String subTag, int numReps){
-		//create the complex tag, with an empty subset of tags
-		ComplexTag complex=new ComplexTag(tag,new ArrayList<Construct>());
-		//loop for numReps and add subcomponents
-		for(int i=0;i<numReps;i++){
-			BasicTag basic=new BasicTag(subTag,"");
-			complex.append(basic);
-		}
-		//the complex tag has been created, now it just needs to be added to the buffer
-		
-		
-		//logic to add to buffer
 	
-	}
 	
 	//end class
 }

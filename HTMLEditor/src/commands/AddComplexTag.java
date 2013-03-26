@@ -8,9 +8,9 @@ public class AddComplexTag implements TagCommand{
 		
 	}
 	
-	public void execute(String tag, String subTag, int numReps){
+	public void execute(String tag, String subTag, int numReps,int tabNum){
 		//logic to create a ComplexTag and add the subTags to it
-		ComplexTag.complexToBuffer(tag,subTag,numReps);
+		//ComplexTag.complexToBuffer(tag,subTag,numReps);
 	}
 	
 	//end class

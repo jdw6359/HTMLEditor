@@ -30,11 +30,7 @@ public class BasicTag extends Construct{
 		this.content=content;
 	}
 	
-	public static void basicToBuffer(String tag){
-		BasicTag basic=new BasicTag(tag,"");
-		//tag has been created, just add to buffer
-		
-	}
+
 	
 	
 	
