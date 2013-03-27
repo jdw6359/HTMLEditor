@@ -7,7 +7,9 @@ import java.io.*;
 import java.awt.*;
 import javax.swing.*;
 
-import commands.*;
+import tagcommands.*;
+import filecommands.*;
+import textcommands.*;
 
 
 /**
@@ -325,53 +327,51 @@ public class EditorGUI extends javax.swing.JFrame {
     private void addHeaderTagActionPerformed(java.awt.event.ActionEvent evt){
     	
     	AddSimpleTag addTag=new AddSimpleTag();
-    	addTag.execute("h1", "",0,tabbedPane.getSelectedIndex() );
+    	addTag.execute("h1",0,tabbedPane.getSelectedIndex() );
     }
     
     private void addBoldTagActionPerformed(java.awt.event.ActionEvent evt){
     	
     	AddSimpleTag addTag=new AddSimpleTag();
-    	addTag.execute("b","",0,tabbedPane.getSelectedIndex());
+    	addTag.execute("b",0,tabbedPane.getSelectedIndex());
     }
     
     private void addItalicTagActionPerformed(java.awt.event.ActionEvent evt){
        	AddSimpleTag addTag=new AddSimpleTag();
-    	addTag.execute("i","",0,tabbedPane.getSelectedIndex());
+    	addTag.execute("i",0,tabbedPane.getSelectedIndex());
     }
     
     private void addTableTagActionPerformed(java.awt.event.ActionEvent evt){
-    	System.out.println("Adding Table Tag");
+    	AddComplexTag addTag=new AddComplexTag();
+    	addTag.execute("table",5,tabbedPane.getSelectedIndex());
+    	
     }
     
     private void addNumberedTagActionPerformed(java.awt.event.ActionEvent evt){
-    	System.out.println("Adding Numbered Tag");
+    	AddListTag addTag=new AddListTag();
+    	addTag.execute("ol",5,tabbedPane.getSelectedIndex());
+    	
     }
     
     private void addBulletedTagActionPerformed(java.awt.event.ActionEvent evt){
-    	System.out.println("Adding Bulleted Tag");
+    	AddListTag addTag=new AddListTag();
+    	addTag.execute("ul",5,tabbedPane.getSelectedIndex());
     }
     
     private void addDictionaryTagActionPerformed(java.awt.event.ActionEvent evt){
-    	System.out.println("Adding Dictionary Tag");
+    	AddComplexTag addTag=new AddComplexTag();
+    	addTag.execute("dl", 5, tabbedPane.getSelectedIndex());
+
     }
     
     
     String textBefore, textAfter, cutText="";   // Strings used for cut and paste functionality
     private void cutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutActionPerformed
+    	
+    	
+    	CutText cut=new CutText();
+    	cut.execute(tabbedPane);
         
-        Component c = tabbedPane.getComponent(0);
-        JTextArea textData = (JTextArea) c;
-        cutText = textData.getSelectedText(); //Selected text to be cut
-        
-        int start = textData.getSelectionStart(); //Index of start of selection
-        int end = textData.getSelectionEnd(); //Index of end of selection
-        textBefore = textData.getText().substring(0, start);                        // String defined outside this method
-        textAfter = textData.getText().substring(end, textData.getText().length());
-        textData.setText(textBefore + textAfter);
-        tabbedPane.setComponentAt(0, textData);
-        
-        
-        System.out.println("Cutted text:"+cutText);
     }//GEN-LAST:event_cutActionPerformed
 
     private void autoIndentationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoIndentationButtonActionPerformed
@@ -448,15 +448,8 @@ public class EditorGUI extends javax.swing.JFrame {
 
     private void pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteActionPerformed
 
-        System.out.println("Text to paste is " + cutText);
-        
-        Component c = tabbedPane.getComponent(0);
-        JTextArea textData = (JTextArea) c;
-        int indexToPlaceText = textData.getSelectionStart();
-        textBefore = textData.getText().substring(0, indexToPlaceText);
-        textAfter = textData.getText().substring(indexToPlaceText);
-        textData.setText(textBefore + cutText + textAfter);
-        tabbedPane.setComponentAt(0, textData);        
+        PasteText paste=new PasteText();
+        paste.execute(tabbedPane);
         
     }//GEN-LAST:event_pasteActionPerformed
 
@@ -534,12 +527,23 @@ public class EditorGUI extends javax.swing.JFrame {
 	
 	public void addPane(){
     	JTextArea area=new JTextArea();
-    	tabbedPane.addTab("Default.html",area);
+    	JScrollPane scroll=new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    	tabbedPane.addTab("Default.html",scroll);
     	
     }
 	
 	public void addText(String text, int tabNum){
-		JTextArea pane=(JTextArea) tabbedPane.getComponentAt(tabNum);
-		pane.append(text);
+		JScrollPane scroll=(JScrollPane) tabbedPane.getComponentAt(tabNum);
+		JViewport viewport=scroll.getViewport();
+		JTextArea area=(JTextArea)viewport.getView();
+		area.append(text);
+		area.setCaretPosition(area.getDocument().getLength());
+	}
+	
+	public void replaceText(String replace){
+		JScrollPane scroll=(JScrollPane)tabbedPane.getSelectedComponent();
+		JViewport viewport=scroll.getViewport();
+		JTextArea area=(JTextArea)viewport.getView();
+		area.setText(replace);
 	}
 }

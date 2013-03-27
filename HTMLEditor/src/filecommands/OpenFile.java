@@ -1,4 +1,6 @@
-package commands;
+package filecommands;
+
+import commands.FileCommand;
 
 public class OpenFile implements FileCommand{
 	
