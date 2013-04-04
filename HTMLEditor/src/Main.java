@@ -13,8 +13,5 @@ public class Main{
 		Editor.getInstance().getGUI().setVisible(true);
 	}
 	
-	public void testStub(){
-		
-	}
-	
 }
+	
